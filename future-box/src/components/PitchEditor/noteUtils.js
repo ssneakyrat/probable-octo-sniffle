@@ -45,10 +45,10 @@ export const createInitialPitchPoints = (noteRect) => {
   ];
 };
 
-// Function to create a new note
-export const createNewNote = (x, y) => {
+// Update the createNewNote function to accept a custom verticalSnap parameter
+export const createNewNote = (x, y, verticalSnap = VERTICAL_SNAP) => {
   // Snap to grid
-  const snappedX = snapToGrid(x - PIANO_KEY_WIDTH, VERTICAL_SNAP) + PIANO_KEY_WIDTH;
+  const snappedX = snapToGrid(x - PIANO_KEY_WIDTH, verticalSnap) + PIANO_KEY_WIDTH;
   const snappedY = snapToGrid(y, HORIZONTAL_SNAP);
   
   // Create a new note rectangle

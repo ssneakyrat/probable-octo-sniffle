@@ -6,16 +6,17 @@ import {
   GRID_WIDTH,
   EDITOR_MODES,
   HORIZONTAL_SNAP,
-  VERTICAL_SNAP,
 } from './constants';
 import { snapToGrid, updateNoteConnections, adjustPitchPoints, updateYOffsets } from './noteUtils';
 
 import EditorToolbar from './EditorToolbar';
+import TimeSignatureSelector from './TimeSignatureSelector';
 import PianoKeys from './PianoKeys';
 import EditorGrid from './EditorGrid';
 import Note from './Note';
 import ConnectionIndicator from './ConnectionIndicator';
 import BarMeasures from './BarMeasures';
+import Instructions from './Instructions';
 
 const PitchEditorContent = () => {
   const { 
@@ -33,7 +34,8 @@ const PitchEditorContent = () => {
     svgRef,
     setSvgRef,
     handleCreateNote,
-    resetDragState
+    resetDragState,
+    getCurrentVerticalSnap
   } = useEditor();
   
   const svgRefElement = useRef(null);
@@ -263,8 +265,11 @@ const PitchEditorContent = () => {
         let newX = initialRect.x + deltaX;
         let newY = initialRect.y + deltaY;
         
+        // Get current vertical snap value based on time signature
+        const verticalSnap = getCurrentVerticalSnap();
+        
         // Snap to grid
-        newX = snapToGrid(newX - PIANO_KEY_WIDTH, VERTICAL_SNAP) + PIANO_KEY_WIDTH;
+        newX = snapToGrid(newX - PIANO_KEY_WIDTH, verticalSnap) + PIANO_KEY_WIDTH;
         newY = snapToGrid(newY, HORIZONTAL_SNAP);
         
         // Constrain to grid boundaries
@@ -298,8 +303,11 @@ const PitchEditorContent = () => {
         // Calculate new left edge and width
         let newX = initialRect.x + deltaX;
         
+        // Get current vertical snap value based on time signature
+        const verticalSnap = getCurrentVerticalSnap();
+        
         // Snap to grid
-        newX = snapToGrid(newX - PIANO_KEY_WIDTH, VERTICAL_SNAP) + PIANO_KEY_WIDTH;
+        newX = snapToGrid(newX - PIANO_KEY_WIDTH, verticalSnap) + PIANO_KEY_WIDTH;
         
         let newWidth = initialRect.x + initialRect.width - newX;
         
@@ -334,9 +342,12 @@ const PitchEditorContent = () => {
         // Calculate new width
         let newWidth = initialRect.width + deltaX;
         
+        // Get current vertical snap value based on time signature
+        const verticalSnap = getCurrentVerticalSnap();
+        
         // Snap to grid
         const rightEdge = initialRect.x + newWidth;
-        const snappedRightEdge = snapToGrid(rightEdge - PIANO_KEY_WIDTH, VERTICAL_SNAP) + PIANO_KEY_WIDTH;
+        const snappedRightEdge = snapToGrid(rightEdge - PIANO_KEY_WIDTH, verticalSnap) + PIANO_KEY_WIDTH;
         newWidth = snappedRightEdge - initialRect.x;
         
         // Enforce minimum width and grid boundaries
@@ -386,14 +397,18 @@ const PitchEditorContent = () => {
     editorMode, 
     svgRef,
     setNotes,
-    resetDragState
+    resetDragState,
+    getCurrentVerticalSnap
   ]);
   
   return (
     <div className="flex flex-col items-center p-4 bg-gray-100 rounded-lg shadow-md w-full max-w-4xl mx-auto select-none">
       <h2 className="text-xl font-bold mb-2">UTAU-like Pitch Editor with Connected Notes</h2>
       
-      <EditorToolbar />
+      <div className="flex justify-between items-center w-full mb-4">
+        <TimeSignatureSelector />
+        <EditorToolbar />
+      </div>
       
       <div className="relative border border-gray-300 bg-white">
         <svg 
@@ -421,6 +436,8 @@ const PitchEditorContent = () => {
           <ConnectionIndicator />
         </svg>
       </div>
+      
+      <Instructions />
     </div>
   );
 };

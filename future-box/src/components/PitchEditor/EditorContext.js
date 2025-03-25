@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { EDITOR_MODES, DRAG_STATES } from './constants';
+import { EDITOR_MODES, DRAG_STATES, GRID_WIDTH, PIANO_KEY_WIDTH } from './constants';
 import { 
   createNewNote, 
   updateNoteConnections, 
@@ -24,6 +24,14 @@ export const EditorProvider = ({ children }) => {
   const [notes, setNotes] = useState([]);
   const [selectedNoteIndex, setSelectedNoteIndex] = useState(null);
   
+  // Time signature state
+  const [timeSignature, setTimeSignature] = useState({
+    id: '4/4',
+    numerator: 4, 
+    denominator: 4,
+    display: '4/4'
+  });
+  
   // State for tracking active interactions
   const [activePoint, setActivePoint] = useState(null);
   const [noteDragState, setNoteDragState] = useState(DRAG_STATES.NONE);
@@ -34,6 +42,22 @@ export const EditorProvider = ({ children }) => {
   // SVG ref will be set by the main component
   const [svgRef, setSvgRef] = useState(null);
   
+  // Calculate divisions based on time signature
+  const calculateTimeDivisions = () => {
+    if (timeSignature.denominator === 4) {
+      return timeSignature.numerator * 4; // Quarter notes for 4/4, 3/4, etc.
+    } else if (timeSignature.denominator === 8) {
+      return timeSignature.numerator * 2; // Eighth notes for 6/8, 9/8, etc.
+    }
+    return 16; // Default fallback
+  };
+  
+  // Calculate vertical snap based on time divisions
+  const getCurrentVerticalSnap = () => {
+    const divisions = calculateTimeDivisions();
+    return (GRID_WIDTH - PIANO_KEY_WIDTH) / divisions;
+  };
+  
   // Initialize with demo notes
   useEffect(() => {
     if (notes.length === 0) {
@@ -43,7 +67,7 @@ export const EditorProvider = ({ children }) => {
   
   // Handler for creating a new note
   const handleCreateNote = (x, y) => {
-    const newNote = createNewNote(x, y);
+    const newNote = createNewNote(x, y, getCurrentVerticalSnap());
     
     setNotes(prevNotes => {
       const newNotes = [...prevNotes, newNote];
@@ -163,11 +187,6 @@ export const EditorProvider = ({ children }) => {
     setInitialPoints(null);
   };
   
-  // Update note during drag/resize
-  const updateNotePosition = (currentX, currentY) => {
-    // Only implemented in the main component with the useEffect for mouse move events
-  };
-  
   return (
     <EditorContext.Provider value={{
       // State
@@ -190,6 +209,12 @@ export const EditorProvider = ({ children }) => {
       svgRef,
       setSvgRef,
       
+      // Time signature
+      timeSignature,
+      setTimeSignature,
+      calculateTimeDivisions,
+      getCurrentVerticalSnap,
+      
       // Actions
       handleCreateNote,
       handleSelectNote,
@@ -201,7 +226,6 @@ export const EditorProvider = ({ children }) => {
       handleAddMiddlePoint,
       handleDeleteControlPoint,
       resetDragState,
-      updateNotePosition,
       
       // Utility functions passed through for components
       updateNoteConnections,

@@ -5,14 +5,21 @@ import {
   GRID_HEIGHT, 
   GRID_WIDTH, 
   GRID_LINES, 
-  TIME_DIVISIONS, 
   HORIZONTAL_SNAP,
-  VERTICAL_SNAP,
   DRAG_STATES
 } from './constants';
 
 const EditorGrid = () => {
-  const { noteDragState } = useEditor();
+  const { 
+    noteDragState, 
+    timeSignature, 
+    calculateTimeDivisions, 
+    getCurrentVerticalSnap 
+  } = useEditor();
+  
+  const divisions = calculateTimeDivisions();
+  const beatsPerMeasure = timeSignature.numerator;
+  const verticalSnap = getCurrentVerticalSnap();
   
   return (
     <>
@@ -39,17 +46,26 @@ const EditorGrid = () => {
       ))}
       
       {/* Vertical grid lines */}
-      {Array.from({ length: TIME_DIVISIONS + 1 }).map((_, i) => (
-        <line 
-          key={`v-${i}`}
-          x1={PIANO_KEY_WIDTH + i * ((GRID_WIDTH - PIANO_KEY_WIDTH) / TIME_DIVISIONS)} 
-          y1="0" 
-          x2={PIANO_KEY_WIDTH + i * ((GRID_WIDTH - PIANO_KEY_WIDTH) / TIME_DIVISIONS)} 
-          y2={GRID_HEIGHT}
-          stroke="#ddd"
-          strokeWidth="1"
-        />
-      ))}
+      {Array.from({ length: divisions + 1 }).map((_, i) => {
+        // Determine if this is a measure start (every beatsPerMeasure divisions)
+        const isMeasureStart = i % beatsPerMeasure === 0;
+        // Determine if this is a beat (depends on time signature)
+        const isBeat = timeSignature.denominator === 4 ? 
+          (i % 1 === 0) : // For 4/4, 3/4, etc. - every quarter note
+          (i % (timeSignature.numerator / 4) === 0); // For 6/8, 9/8, etc. - every dotted quarter (3 eighth notes)
+        
+        return (
+          <line 
+            key={`v-${i}`}
+            x1={PIANO_KEY_WIDTH + i * ((GRID_WIDTH - PIANO_KEY_WIDTH) / divisions)} 
+            y1="0" 
+            x2={PIANO_KEY_WIDTH + i * ((GRID_WIDTH - PIANO_KEY_WIDTH) / divisions)} 
+            y2={GRID_HEIGHT}
+            stroke={isMeasureStart ? "#aaa" : (isBeat ? "#ccc" : "#ddd")}
+            strokeWidth={isMeasureStart ? "1.5" : "1"}
+          />
+        );
+      })}
       
       {/* Show snap grid indicators for selection mode when dragging */}
       {noteDragState && (
@@ -70,12 +86,12 @@ const EditorGrid = () => {
           ))}
           
           {/* Visual indicator for grid snap positions - vertical */}
-          {Array.from({ length: TIME_DIVISIONS + 1 }).map((_, i) => (
+          {Array.from({ length: divisions + 1 }).map((_, i) => (
             <line 
               key={`snap-v-${i}`}
-              x1={PIANO_KEY_WIDTH + i * VERTICAL_SNAP} 
+              x1={PIANO_KEY_WIDTH + i * verticalSnap} 
               y1="0" 
-              x2={PIANO_KEY_WIDTH + i * VERTICAL_SNAP} 
+              x2={PIANO_KEY_WIDTH + i * verticalSnap} 
               y2={GRID_HEIGHT}
               stroke="#5070c0"
               strokeWidth="0.5"
