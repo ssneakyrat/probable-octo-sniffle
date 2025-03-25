@@ -7,7 +7,8 @@ import {
   TOTAL_GRID_WIDTH,
   GRID_LINES, 
   HORIZONTAL_SNAP,
-  DRAG_STATES
+  DRAG_STATES,
+  DEFAULT_MEASURE_COUNT
 } from './constants';
 
 const EditorGrid = () => {
@@ -18,8 +19,11 @@ const EditorGrid = () => {
     getCurrentVerticalSnap 
   } = useEditor();
   
-  const divisions = calculateTimeDivisions();
+  // Calculate divisions using the same method as BarMeasures.js for consistency
   const beatsPerMeasure = timeSignature.numerator;
+  const totalMeasuresCount = DEFAULT_MEASURE_COUNT;
+  const totalDivisions = totalMeasuresCount * beatsPerMeasure;
+  
   const verticalSnap = getCurrentVerticalSnap();
   
   return (
@@ -46,8 +50,8 @@ const EditorGrid = () => {
         />
       ))}
       
-      {/* Vertical grid lines */}
-      {Array.from({ length: divisions + 1 }).map((_, i) => {
+      {/* Vertical grid lines - match calculation with BarMeasures.js */}
+      {Array.from({ length: totalDivisions + 1 }).map((_, i) => {
         // Determine if this is a measure start (every beatsPerMeasure divisions)
         const isMeasureStart = i % beatsPerMeasure === 0;
         // Determine if this is a beat (depends on time signature)
@@ -55,13 +59,13 @@ const EditorGrid = () => {
           (i % 1 === 0) : // For 4/4, 3/4, etc. - every quarter note
           (i % (timeSignature.numerator / 4) === 0); // For 6/8, 9/8, etc. - every dotted quarter (3 eighth notes)
         
-        // Calculate position based on TOTAL_GRID_WIDTH instead of GRID_WIDTH
+        // Calculate position based on TOTAL_GRID_WIDTH with consistent measure division
         return (
           <line 
             key={`v-${i}`}
-            x1={PIANO_KEY_WIDTH + i * ((TOTAL_GRID_WIDTH - PIANO_KEY_WIDTH) / divisions)} 
+            x1={PIANO_KEY_WIDTH + i * ((TOTAL_GRID_WIDTH - PIANO_KEY_WIDTH) / totalDivisions)} 
             y1="0" 
-            x2={PIANO_KEY_WIDTH + i * ((TOTAL_GRID_WIDTH - PIANO_KEY_WIDTH) / divisions)} 
+            x2={PIANO_KEY_WIDTH + i * ((TOTAL_GRID_WIDTH - PIANO_KEY_WIDTH) / totalDivisions)} 
             y2={GRID_HEIGHT}
             stroke={isMeasureStart ? "#aaa" : (isBeat ? "#ccc" : "#ddd")}
             strokeWidth={isMeasureStart ? "1.5" : "1"}
@@ -87,13 +91,13 @@ const EditorGrid = () => {
             />
           ))}
           
-          {/* Visual indicator for grid snap positions - vertical */}
-          {Array.from({ length: divisions + 1 }).map((_, i) => (
+          {/* Visual indicator for grid snap positions - vertical - match calculation with grid lines */}
+          {Array.from({ length: totalDivisions + 1 }).map((_, i) => (
             <line 
               key={`snap-v-${i}`}
-              x1={PIANO_KEY_WIDTH + i * verticalSnap} 
+              x1={PIANO_KEY_WIDTH + i * ((TOTAL_GRID_WIDTH - PIANO_KEY_WIDTH) / totalDivisions)} 
               y1="0" 
-              x2={PIANO_KEY_WIDTH + i * verticalSnap} 
+              x2={PIANO_KEY_WIDTH + i * ((TOTAL_GRID_WIDTH - PIANO_KEY_WIDTH) / totalDivisions)} 
               y2={GRID_HEIGHT}
               stroke="#5070c0"
               strokeWidth="0.5"
