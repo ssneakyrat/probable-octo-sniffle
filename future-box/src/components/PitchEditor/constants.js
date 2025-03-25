@@ -4,7 +4,7 @@ export const PIANO_PITCH_COUNT = 48; // Default number of piano pitches
 export const PITCH_HEIGHT = 16; // Height per pitch in pixels
 
 // Measure configuration
-export const DEFAULT_MEASURE_COUNT = 50; // Number of measures to display in the grid
+export const DEFAULT_MEASURE_COUNT = 60; // Number of measures to display in the grid
 export const MEASURE_WIDTH = 60; // Width per measure in pixels (horizontal space for each measure)
 
 // Calculate grid width based on measure count and measure width
@@ -19,7 +19,9 @@ let currentMeasureWidth = MEASURE_WIDTH;
 
 // Initial calculated constants
 export let GRID_WIDTH = calculateGridWidth(currentMeasureCount, currentMeasureWidth);
-export let TOTAL_GRID_WIDTH = GRID_WIDTH * 2; // Total width of the grid including scrollable area
+// Fix the calculation of TOTAL_GRID_WIDTH to prevent unnecessary white space
+// The grid should start immediately after the piano keys
+export let TOTAL_GRID_WIDTH = PIANO_KEY_WIDTH + GRID_WIDTH;
 
 export const MIN_NOTE_WIDTH = 80;
 export const NOTE_HEIGHT = 20;
@@ -58,8 +60,7 @@ export const updatePianoValues = (pitchCount) => {
   PIANO_KEYS = generatePianoKeys(pitchCount);
   GRID_HEIGHT = pitchCount * PITCH_HEIGHT;
   GRID_LINES = pitchCount;
-  //EXTENDED_GRID_HEIGHT = GRID_HEIGHT;
-  TOTAL_GRID_HEIGHT = GRID_HEIGHT * 2; // Set total height to double the grid height, similar to width
+  TOTAL_GRID_HEIGHT = GRID_HEIGHT + 60; // Add some extra height but not doubling it
   HORIZONTAL_SNAP = GRID_HEIGHT / GRID_LINES;
 };
 
@@ -68,7 +69,8 @@ export const updateMeasureValues = (measureCount, measureWidth) => {
   currentMeasureCount = measureCount;
   currentMeasureWidth = measureWidth;
   GRID_WIDTH = calculateGridWidth(measureCount, measureWidth);
-  TOTAL_GRID_WIDTH = GRID_WIDTH * 2;
+  // Fix for TOTAL_GRID_WIDTH calculation when measure values change
+  TOTAL_GRID_WIDTH = PIANO_KEY_WIDTH + GRID_WIDTH;
   VERTICAL_SNAP = (GRID_WIDTH - PIANO_KEY_WIDTH) / TIME_DIVISIONS;
 };
 
@@ -79,7 +81,7 @@ export let PIANO_KEYS = generatePianoKeys(currentPitchCount);
 export let GRID_HEIGHT = currentPitchCount * PITCH_HEIGHT;
 export let GRID_LINES = currentPitchCount;
 export let EXTENDED_GRID_HEIGHT = GRID_HEIGHT;
-export let TOTAL_GRID_HEIGHT = GRID_HEIGHT * 2; // Added total height, similar to total width
+export let TOTAL_GRID_HEIGHT = GRID_HEIGHT + 60; // Reduced from doubling to adding extra space
 export let HORIZONTAL_SNAP = GRID_HEIGHT / GRID_LINES;
 
 // Grid dimensions that don't depend on pitch count - still constants

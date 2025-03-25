@@ -45,21 +45,22 @@ export const createInitialPitchPoints = (noteRect) => {
   ];
 };
 
-// Update to createNewNote in noteUtils.js
+// Update createNewNote function to work with the new structure
 export const createNewNote = (x, y, verticalSnap = VERTICAL_SNAP) => {
-  // Snap the grid position (after accounting for piano width and centering)
-  const snappedX = PIANO_KEY_WIDTH + snapToGrid(x - PIANO_KEY_WIDTH - MIN_NOTE_WIDTH / 2, verticalSnap);
+  // For the new structure, x position is already relative to the grid (no need to subtract PIANO_KEY_WIDTH)
+  const snappedX = snapToGrid(x - MIN_NOTE_WIDTH / 2, verticalSnap);
   const snappedY = snapToGrid(y - NOTE_HEIGHT / 2, HORIZONTAL_SNAP);
   
   // Create a note rectangle at the snapped position
+  // Keep the original coordinate system for internal calculations
   const noteRect = {
-    x: Math.max(PIANO_KEY_WIDTH, snappedX),
+    x: Math.max(PIANO_KEY_WIDTH, snappedX + PIANO_KEY_WIDTH), // Add back piano key width for internal coordinates
     y: Math.max(0, Math.min(GRID_HEIGHT - NOTE_HEIGHT, snappedY)),
     width: MIN_NOTE_WIDTH,
     height: NOTE_HEIGHT
   };
   
-  // Ensure note is fully within grid - now use TOTAL_GRID_WIDTH instead of GRID_WIDTH
+  // Ensure note is fully within grid
   if (noteRect.x + noteRect.width > TOTAL_GRID_WIDTH) {
     noteRect.x = TOTAL_GRID_WIDTH - noteRect.width;
   }
