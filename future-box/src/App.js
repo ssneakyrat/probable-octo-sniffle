@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import PianoRoll from './component/PianoRoll';
-import DraggableWindowsContainer from './component/DraggableWindowsContainer';
+import SimpleDraggableWindow  from './component/SimpleDraggableWindow';
 
 /**
  * Main App component that renders the PianoRoll within a draggable Windows-like container
@@ -9,9 +9,11 @@ import DraggableWindowsContainer from './component/DraggableWindowsContainer';
 function App() {
   return (
     <div className="App">
-      <DraggableWindowsContainer title="FutureBox Audio Editor">
-        <PianoRoll />
-      </DraggableWindowsContainer>
+      <SimpleDraggableWindow  title="Piano Roll">
+        <SimpleDraggableWindow  title="Piano Roll">
+          <PianoRoll />
+        </SimpleDraggableWindow>
+      </SimpleDraggableWindow>
     </div>
   );
 }

@@ -1,0 +1,28 @@
+/* This CSS file adds styling for SimpleDraggableWindow */
+/* Import the base styles from WindowsContainer */
+@import './WindowsContainer.css';
+@import './DraggableWindowsContainer.css';
+
+/* Additional styles specific to SimpleDraggableWindow */
+.simple-draggable-window {
+  min-height: 100px;
+  min-width: 200px;
+  height: auto;
+}
+
+/* Adjust the content area to fill the entire space below the title bar */
+.simple-draggable-window .windows-content {
+  flex: 1;
+  overflow: auto;
+  border-top: 1px solid #ddd;
+}
+
+/* Remove the default margin to allow for proper absolute positioning */
+.simple-draggable-window:not(.maximized) {
+  margin: 0;
+}
+
+/* Ensure the window has a proper box shadow to make it stand out */
+.simple-draggable-window:not(.maximized) {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
