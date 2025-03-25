@@ -1,6 +1,6 @@
 import React from 'react';
 import { useEditor } from './EditorContext';
-import { PIANO_KEY_WIDTH, GRID_WIDTH, EXTENDED_GRID_WIDTH, TOTAL_GRID_WIDTH } from './constants';
+import { PIANO_KEY_WIDTH, GRID_WIDTH, TOTAL_GRID_WIDTH, DEFAULT_MEASURE_COUNT } from './constants';
 
 const BarMeasures = () => {
   const { timeSignature, calculateTimeDivisions } = useEditor();
@@ -8,12 +8,12 @@ const BarMeasures = () => {
   const divisions = calculateTimeDivisions();
   const beatsPerMeasure = timeSignature.numerator;
   
-  // Calculate the ratio of total width to visible grid width
-  const widthRatio = TOTAL_GRID_WIDTH / GRID_WIDTH;
+  // Use DEFAULT_MEASURE_COUNT directly instead of calculating from grid widths
+  // This ensures the number of measures matches what was defined in constants.js
+  const totalMeasuresCount = DEFAULT_MEASURE_COUNT;
   
-  // Adjust the number of divisions and measures for the total grid width
-  const totalDivisions = Math.ceil(divisions * widthRatio);
-  const totalMeasuresCount = Math.ceil(totalDivisions / beatsPerMeasure);
+  // Calculate total divisions based on measures and beats per measure
+  const totalDivisions = totalMeasuresCount * beatsPerMeasure;
   
   return (
     <>
@@ -38,7 +38,7 @@ const BarMeasures = () => {
         {timeSignature.display}
       </text>
       
-      {/* Bar Measure Numbers - now use totalMeasuresCount and TOTAL_GRID_WIDTH */}
+      {/* Bar Measure Numbers - show all measures defined in DEFAULT_MEASURE_COUNT */}
       {Array.from({ length: totalMeasuresCount + 1 }).map((_, i) => (
         <text
           key={`measure-${i}`}
@@ -52,7 +52,7 @@ const BarMeasures = () => {
         </text>
       ))}
       
-      {/* Bar Measure ticks - now use totalDivisions and TOTAL_GRID_WIDTH */}
+      {/* Bar Measure ticks - use totalDivisions based on measure count */}
       {Array.from({ length: totalDivisions + 1 }).map((_, i) => {
         // Determine if this is a measure start (every beatsPerMeasure divisions)
         const isMeasureStart = i % beatsPerMeasure === 0;

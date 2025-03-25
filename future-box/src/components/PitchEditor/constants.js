@@ -2,12 +2,14 @@
 export const PIANO_KEY_WIDTH = 50;
 export const PIANO_PITCH_COUNT = 48; // Default number of piano pitches
 export const PITCH_HEIGHT = 16; // Height per pitch in pixels
-export const DEFAULT_MEASURE_COUNT = 32; // Default number of measures
-export const MEASURE_WIDTH = 120; // Default width per measure in pixels
 
-// Calculate initial grid width based on measures
+// Measure configuration
+export const DEFAULT_MEASURE_COUNT = 32; // Number of measures to display in the grid
+export const MEASURE_WIDTH = 60; // Width per measure in pixels (horizontal space for each measure)
+
+// Calculate grid width based on measure count and measure width
 const calculateGridWidth = (measureCount, width) => {
-  return measureCount * width;
+  return measureCount * width; // Total width = number of measures * width per measure
 };
 
 // Setting initial values
