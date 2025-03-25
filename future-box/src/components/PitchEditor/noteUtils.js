@@ -45,16 +45,16 @@ export const createInitialPitchPoints = (noteRect) => {
   ];
 };
 
-// Update the createNewNote function to accept a custom verticalSnap parameter
+// Update the createNewNote function to properly snap to the time signature grid
 export const createNewNote = (x, y, verticalSnap = VERTICAL_SNAP) => {
-  // Snap to grid
-  const snappedX = snapToGrid(x - PIANO_KEY_WIDTH, verticalSnap) + PIANO_KEY_WIDTH;
-  const snappedY = snapToGrid(y, HORIZONTAL_SNAP);
+  // Snap the grid position (after accounting for piano width and centering)
+  const snappedX = PIANO_KEY_WIDTH + snapToGrid(x - PIANO_KEY_WIDTH - MIN_NOTE_WIDTH / 2, verticalSnap);
+  const snappedY = snapToGrid(y - NOTE_HEIGHT / 2, HORIZONTAL_SNAP);
   
-  // Create a new note rectangle
+  // Create a note rectangle at the snapped position
   const noteRect = {
-    x: Math.max(PIANO_KEY_WIDTH, snappedX - MIN_NOTE_WIDTH / 2),
-    y: Math.max(0, Math.min(GRID_HEIGHT - NOTE_HEIGHT, snappedY - NOTE_HEIGHT / 2)),
+    x: Math.max(PIANO_KEY_WIDTH, snappedX),
+    y: Math.max(0, Math.min(GRID_HEIGHT - NOTE_HEIGHT, snappedY)),
     width: MIN_NOTE_WIDTH,
     height: NOTE_HEIGHT
   };
