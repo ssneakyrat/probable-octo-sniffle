@@ -37,16 +37,18 @@ const PitchEditorContent = () => {
     setSvgRef,
     handleCreateNote,
     resetDragState,
-    getCurrentVerticalSnap
+    getCurrentVerticalSnap,
+    pianoPitchCount, // Add this to ensure re-render when pitch count changes
   } = useEditor();
   
   const svgRefElement = useRef(null);
+  const containerRef = useRef(null);
   
   // Set the SVG ref in the context
   useEffect(() => {
     setSvgRef(svgRefElement.current);
   }, [svgRefElement, setSvgRef]);
-  
+
   // Handle click on grid to create a new note in draw mode
   const handleGridClick = (e) => {
     if (editorMode !== EDITOR_MODES.DRAW) return;
@@ -141,8 +143,8 @@ const PitchEditorContent = () => {
         const x = currentX;
         const y = currentY;
         
-        // Keep y within grid
-        const newY = Math.max(0, Math.min(GRID_HEIGHT, y));
+        // Keep y within grid - strict enforcement
+        const newY = Math.max(0, Math.min(GRID_HEIGHT - 10, y));
         
         setNotes(prevNotes => {
           const newNotes = [...prevNotes];
@@ -274,10 +276,12 @@ const PitchEditorContent = () => {
         newX = snapToGrid(newX - PIANO_KEY_WIDTH, verticalSnap) + PIANO_KEY_WIDTH;
         newY = snapToGrid(newY, HORIZONTAL_SNAP);
         
-        // Constrain to grid boundaries
+        // Strict enforcement of grid boundaries
+        // Added a buffer of the note height to prevent dragging beyond visible area
         newX = Math.max(PIANO_KEY_WIDTH, newX);
         newX = Math.min(TOTAL_GRID_WIDTH - initialRect.width, newX);
-        newY = Math.max(0, Math.min(GRID_HEIGHT - initialRect.height, newY));
+        newY = Math.max(0, newY);
+        newY = Math.min(GRID_HEIGHT - initialRect.height, newY);
         
         // Update note rectangle
         const newRect = {
@@ -419,23 +423,34 @@ const PitchEditorContent = () => {
         className="border-8 border-red-600 rounded-lg p-2 w-full bg-white shadow-lg"
         style={{ borderWidth: '4px', borderColor: '#000000', borderStyle: 'solid' }}
       >
-        <div className="relative border border-gray-300 bg-white">
-          <div className="overflow-auto" 
+        {/* Add a position relative wrapper to ensure scrollbars appear in the right place */}
+        <div className="relative border border-gray-300 bg-white" style={{ width: '100%' }}>
+          {/* Fixed height container with overflow and proper dimensions */}
+          <div 
+            ref={containerRef}
+            className="overflow-auto" 
             style={{ 
-            width: '100%',
-            maxWidth: GRID_WIDTH,
-            maxHeight: GRID_HEIGHT/2,
-            overflowX: 'auto',
-            overflowY: 'auto' 
-          }}
+              width: '100%',
+              height: '300px', // Fixed height to ensure consistent scrollbar behavior
+              position: 'relative', // This helps contain the scrollbars within this element
+            }}
           >
+            {/* 
+              SVG with explicit width and height greater than container to force scrollbars 
+              We're using inline style to set the width greater than container
+            */}
             <svg 
               ref={svgRefElement}
               width={TOTAL_GRID_WIDTH} 
               height={GRID_HEIGHT}
-              viewBox={`0 -30 ${TOTAL_GRID_WIDTH+200} ${GRID_HEIGHT + 30}`}
+              viewBox={`0 -30 ${TOTAL_GRID_WIDTH} ${GRID_HEIGHT + 30}`}
               className="cursor-default"
-              style={{ cursor: getCursorStyle() }}
+              style={{ 
+                cursor: getCursorStyle(),
+                minWidth: '120%', // Force horizontal scrollbar by making content wider than container
+                display: 'block', // Prevent extra space below SVG
+                position: 'relative'
+              }}
               onClick={handleGridClick}
             >
               <BarMeasures />
