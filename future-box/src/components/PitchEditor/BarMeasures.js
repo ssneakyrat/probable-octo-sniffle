@@ -1,26 +1,32 @@
 import React from 'react';
 import { useEditor } from './EditorContext';
-import { PIANO_KEY_WIDTH, GRID_WIDTH, EXTENDED_GRID_WIDTH } from './constants';
+import { PIANO_KEY_WIDTH, GRID_WIDTH, EXTENDED_GRID_WIDTH, TOTAL_GRID_WIDTH } from './constants';
 
 const BarMeasures = () => {
   const { timeSignature, calculateTimeDivisions } = useEditor();
   
   const divisions = calculateTimeDivisions();
   const beatsPerMeasure = timeSignature.numerator;
-  const measuresCount = Math.ceil(divisions / beatsPerMeasure);
+  
+  // Calculate the ratio of total width to visible grid width
+  const widthRatio = TOTAL_GRID_WIDTH / GRID_WIDTH;
+  
+  // Adjust the number of divisions and measures for the total grid width
+  const totalDivisions = Math.ceil(divisions * widthRatio);
+  const totalMeasuresCount = Math.ceil(totalDivisions / beatsPerMeasure);
   
   return (
     <>
-      {/* Bar Measure Background */}
+      {/* Bar Measure Background - now spans the total width */}
       <rect 
         x={PIANO_KEY_WIDTH} 
         y="-20" 
-        width={GRID_WIDTH - PIANO_KEY_WIDTH} 
+        width={TOTAL_GRID_WIDTH - PIANO_KEY_WIDTH} 
         height="20" 
         fill="#e8e8e8" 
       />
       
-      {/* Time Signature Display */}
+      {/* Time Signature Display - unchanged */}
       <text
         x={PIANO_KEY_WIDTH / 2}
         y="-7"
@@ -32,11 +38,11 @@ const BarMeasures = () => {
         {timeSignature.display}
       </text>
       
-      {/* Bar Measure Numbers (Measure count) */}
-      {Array.from({ length: measuresCount + 1 }).map((_, i) => (
+      {/* Bar Measure Numbers - now use totalMeasuresCount and TOTAL_GRID_WIDTH */}
+      {Array.from({ length: totalMeasuresCount + 1 }).map((_, i) => (
         <text
           key={`measure-${i}`}
-          x={PIANO_KEY_WIDTH + i * ((GRID_WIDTH - PIANO_KEY_WIDTH) / measuresCount)}
+          x={PIANO_KEY_WIDTH + i * ((TOTAL_GRID_WIDTH - PIANO_KEY_WIDTH) / totalMeasuresCount)}
           y="-7"
           textAnchor="middle"
           fill="#555"
@@ -46,8 +52,8 @@ const BarMeasures = () => {
         </text>
       ))}
       
-      {/* Bar Measure ticks */}
-      {Array.from({ length: divisions + 1 }).map((_, i) => {
+      {/* Bar Measure ticks - now use totalDivisions and TOTAL_GRID_WIDTH */}
+      {Array.from({ length: totalDivisions + 1 }).map((_, i) => {
         // Determine if this is a measure start (every beatsPerMeasure divisions)
         const isMeasureStart = i % beatsPerMeasure === 0;
         // Determine if this is a beat (depends on time signature)
@@ -58,9 +64,9 @@ const BarMeasures = () => {
         return (
           <line 
             key={`tick-${i}`}
-            x1={PIANO_KEY_WIDTH + i * ((GRID_WIDTH - PIANO_KEY_WIDTH) / divisions)} 
+            x1={PIANO_KEY_WIDTH + i * ((TOTAL_GRID_WIDTH - PIANO_KEY_WIDTH) / totalDivisions)} 
             y1={isMeasureStart ? "-5" : (isBeat ? "-4" : "-2")} 
-            x2={PIANO_KEY_WIDTH + i * ((GRID_WIDTH - PIANO_KEY_WIDTH) / divisions)} 
+            x2={PIANO_KEY_WIDTH + i * ((TOTAL_GRID_WIDTH - PIANO_KEY_WIDTH) / totalDivisions)} 
             y2="0"
             stroke={isMeasureStart ? "#333" : "#555"}
             strokeWidth={isMeasureStart ? "1.5" : "1"}

@@ -2,8 +2,9 @@
 export const PIANO_KEY_WIDTH = 50;
 export const PIANO_PITCH_COUNT = 48; // Default number of piano pitches
 export const PITCH_HEIGHT = 16; // Height per pitch in pixels
-export const GRID_WIDTH = 600;
-export const EXTENDED_GRID_WIDTH = 1200; // Extended width for scrolling
+export const GRID_WIDTH = 1200;
+//export const EXTENDED_GRID_WIDTH = 1200; // Extended width for scrolling
+export const TOTAL_GRID_WIDTH = 1200; // Total width of the grid including scrollable area
 export const MIN_NOTE_WIDTH = 80;
 export const NOTE_HEIGHT = 20;
 export const TIME_DIVISIONS = 16; // Number of vertical grid lines
