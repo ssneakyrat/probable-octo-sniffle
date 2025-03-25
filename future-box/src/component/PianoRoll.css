@@ -25,3 +25,8 @@
   .piano-keyboard {
     background-color: #222;
   }
+  
+  .bar-measure {
+    background-color: #1a1a1a;
+    border-bottom: 1px solid #555;
+  }

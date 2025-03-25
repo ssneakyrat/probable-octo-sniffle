@@ -3,6 +3,7 @@ import './PianoRoll.css';
 
 /**
  * PianoRoll component that displays an SVG grid with horizontal and vertical scrolling
+ * and a bar measure ruler at the top
  */
 const PianoRoll = () => {
   const containerRef = useRef(null);
@@ -17,6 +18,7 @@ const PianoRoll = () => {
     viewWidth: 800, // Visible width of the grid container
     viewHeight: 500, // Visible height of the grid container
     keyboardWidth: 100, // Width of the piano keyboard on the left
+    barMeasureHeight: 30, // Height of the bar measure at the top
   });
 
   // Handle scroll events
@@ -133,6 +135,63 @@ const PianoRoll = () => {
     return keys;
   };
 
+  // Create bar measure
+  const createBarMeasure = () => {
+    const measures = [];
+    const beatsPerMeasure = 4; // Standard 4/4 time signature
+    const cellsPerBeat = 4; // Each beat takes 4 cells (16th notes)
+    const measureWidth = beatsPerMeasure * cellsPerBeat * gridDimensions.cellWidth;
+    
+    // Calculate how many measures we need based on the grid width
+    const measureCount = Math.ceil(gridDimensions.width / measureWidth);
+    
+    // Create measure numbers and bar lines
+    for (let i = 0; i <= measureCount; i++) {
+      // Add measure number
+      measures.push(
+        <text
+          key={`measure-${i}`}
+          x={i * measureWidth + 5}
+          y={20}
+          fill="#fff"
+          fontSize="12"
+        >
+          {i + 1}
+        </text>
+      );
+      
+      // Add major bar line at the start of each measure
+      measures.push(
+        <line
+          key={`measure-line-${i}`}
+          x1={i * measureWidth}
+          y1={0}
+          x2={i * measureWidth}
+          y2={gridDimensions.barMeasureHeight}
+          stroke="#fff"
+          strokeWidth="2"
+        />
+      );
+      
+      // Add beat lines within each measure
+      for (let j = 1; j < beatsPerMeasure; j++) {
+        measures.push(
+          <line
+            key={`beat-line-${i}-${j}`}
+            x1={i * measureWidth + j * cellsPerBeat * gridDimensions.cellWidth}
+            y1={0}
+            x2={i * measureWidth + j * cellsPerBeat * gridDimensions.cellWidth}
+            y2={gridDimensions.barMeasureHeight}
+            stroke="#999"
+            strokeWidth="1"
+          />
+        );
+      }
+    }
+    
+    return measures;
+  };
+
   return (
     <div className="piano-roll-wrapper" style={{ 
       position: 'relative', 
@@ -142,13 +201,40 @@ const PianoRoll = () => {
       borderRadius: '4px',
       overflow: 'hidden'
     }}>
+      {/* Bar measure at the top */}
+      <div className="bar-measure" style={{ 
+        position: 'absolute', 
+        top: 0, 
+        left: gridDimensions.keyboardWidth, 
+        width: gridDimensions.viewWidth - gridDimensions.keyboardWidth, 
+        height: gridDimensions.barMeasureHeight,
+        overflow: 'hidden',
+        zIndex: 2,
+        backgroundColor: '#1a1a1a',
+        boxShadow: '0 2px 5px rgba(0,0,0,0.3)'
+      }}>
+        <div style={{ 
+          position: 'absolute', 
+          left: -scrollPosition.x, 
+          width: gridDimensions.width, 
+          height: '100%'
+        }}>
+          <svg 
+            width={gridDimensions.width} 
+            height={gridDimensions.barMeasureHeight}
+          >
+            {createBarMeasure()}
+          </svg>
+        </div>
+      </div>
+      
       {/* Fixed position piano keyboard */}
       <div className="piano-keyboard" style={{ 
         position: 'absolute', 
-        top: 0, 
+        top: gridDimensions.barMeasureHeight, 
         left: 0, 
         width: gridDimensions.keyboardWidth, 
-        height: '100%',
+        height: gridDimensions.viewHeight - gridDimensions.barMeasureHeight,
         overflow: 'hidden',
         zIndex: 2,
         boxShadow: '2px 0 5px rgba(0,0,0,0.3)'
@@ -179,10 +265,10 @@ const PianoRoll = () => {
         className="piano-roll-container" 
         style={{ 
           position: 'absolute',
-          top: 0,
+          top: gridDimensions.barMeasureHeight,
           right: 0,
           width: gridDimensions.viewWidth - gridDimensions.keyboardWidth, 
-          height: gridDimensions.viewHeight,
+          height: gridDimensions.viewHeight - gridDimensions.barMeasureHeight,
           overflow: 'auto',
           marginLeft: gridDimensions.keyboardWidth
         }}
