@@ -14,7 +14,8 @@ const SimpleDraggableWindow = ({ title, children, isNested }) => {
   const [isMaximized, setIsMaximized] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
-  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+  const [initialMousePos, setInitialMousePos] = useState({ x: 0, y: 0 });
+  const [initialWindowPos, setInitialWindowPos] = useState({ x: 0, y: 0 });
   const containerRef = useRef(null);
   
   // Auto-detect if this is a nested SimpleDraggableWindow by checking the children
@@ -34,33 +35,31 @@ const SimpleDraggableWindow = ({ title, children, isNested }) => {
     }
   };
 
-  // Start dragging when mouse down on title bar
+  // Start dragging when mouse down on title bar - MODIFIED
   const handleMouseDown = (e) => {
     if (isMaximized) return; // Don't allow dragging when maximized
     
-    // Get the current position of the container
-    const containerRect = containerRef.current.getBoundingClientRect();
-    
-    // Calculate the offset from the mouse position to the container position
-    setDragOffset({
-      x: e.clientX - containerRect.left,
-      y: e.clientY - containerRect.top
-    });
-    
+    // Store the initial mouse position and the window's current position
+    setInitialMousePos({ x: e.clientX, y: e.clientY });
+    setInitialWindowPos({ ...position });
     setIsDragging(true);
     
     // Prevent event from bubbling up to parent windows
     e.stopPropagation();
   };
 
-  // Handle mouse move event for dragging
+  // Handle mouse move event for dragging - MODIFIED
   const handleMouseMove = (e) => {
     if (!isDragging) return;
     
-    // Calculate new position based on mouse position and original offset
+    // Calculate the delta movement from the initial mouse position
+    const deltaX = e.clientX - initialMousePos.x;
+    const deltaY = e.clientY - initialMousePos.y;
+    
+    // Apply this delta to the initial window position
     const newPosition = {
-      x: e.clientX - dragOffset.x,
-      y: e.clientY - dragOffset.y
+      x: initialWindowPos.x + deltaX,
+      y: initialWindowPos.y + deltaY
     };
     
     setPosition(newPosition);
@@ -86,7 +85,7 @@ const SimpleDraggableWindow = ({ title, children, isNested }) => {
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);
     };
-  }, [isDragging]);
+  }, [isDragging, initialMousePos, initialWindowPos]);
 
   // Apply styles based on maximized state and position
   const containerStyles = isMaximized
