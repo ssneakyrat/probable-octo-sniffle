@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import './WindowsContainer.css';
 import './DraggableWindowsContainer.css';
 import './SimpleDraggableWindow.css';
@@ -59,7 +59,7 @@ const SimpleDraggableWindow = ({ title, children, isNested, initialMaximized = f
   };
 
   // Start dragging when mouse down on title bar
-  const handleMouseDown = (e) => {
+  const handleMouseDown = useCallback((e) => {
     if (isMaximized) return; // Don't allow dragging when maximized
     
     // Store the initial mouse position and the window's current position
@@ -70,10 +70,10 @@ const SimpleDraggableWindow = ({ title, children, isNested, initialMaximized = f
     // Prevent event from bubbling up to parent windows
     e.stopPropagation();
     e.preventDefault();
-  };
+  }, [isMaximized, position]);
 
   // Handle mouse move event for dragging
-  const handleMouseMove = (e) => {
+  const handleMouseMove = useCallback((e) => {
     if (!isDragging) return;
     
     // Calculate the delta movement from the initial mouse position
@@ -87,19 +87,17 @@ const SimpleDraggableWindow = ({ title, children, isNested, initialMaximized = f
     };
     
     setPosition(newPosition);
-  };
+  }, [isDragging, initialMousePos, initialWindowPos]);
 
   // End dragging when mouse up
-  const handleMouseUp = () => {
+  const handleMouseUp = useCallback(() => {
     setIsDragging(false);
     setIsResizing(false);
-  };
+  }, []);
 
   // Start resizing when mouse down on a resize handle
-  const handleResizeStart = (e, direction) => {
+  const handleResizeStart = useCallback((e, direction) => {
     if (isMaximized) return; // Don't allow resizing when maximized
-    
-    console.log("Resize started:", direction);
     
     // Store initial mouse position, window position and size
     setInitialMousePos({ x: e.clientX, y: e.clientY });
@@ -111,17 +109,15 @@ const SimpleDraggableWindow = ({ title, children, isNested, initialMaximized = f
     // Prevent event from bubbling up
     e.stopPropagation();
     e.preventDefault();
-  };
+  }, [isMaximized, position, dimensions]);
 
   // Handle mouse move event for resizing
-  const handleResizeMove = (e) => {
+  const handleResizeMove = useCallback((e) => {
     if (!isResizing) return;
     
     // Calculate the delta movement from initial mouse position
     const deltaX = e.clientX - initialMousePos.x;
     const deltaY = e.clientY - initialMousePos.y;
-    
-    console.log("Resizing delta:", deltaX, deltaY, "Direction:", resizeDirection);
     
     // Default minimum dimensions
     const minWidth = 200;
@@ -162,7 +158,7 @@ const SimpleDraggableWindow = ({ title, children, isNested, initialMaximized = f
     // Update position and dimensions
     setPosition({ x: newX, y: newY });
     setDimensions({ width: newWidth, height: newHeight });
-  };
+  }, [isResizing, initialMousePos, initialWindowPos, initialWindowSize, resizeDirection]);
 
   // Add and remove event listeners for dragging and resizing
   useEffect(() => {
@@ -189,7 +185,7 @@ const SimpleDraggableWindow = ({ title, children, isNested, initialMaximized = f
       document.removeEventListener('mousemove', handleGlobalMouseMove);
       document.removeEventListener('mouseup', handleGlobalMouseUp);
     };
-  }, [isDragging, isResizing, initialMousePos, initialWindowPos, initialWindowSize, resizeDirection]);
+  }, [isDragging, isResizing, handleMouseMove, handleResizeMove, handleMouseUp]);
 
   // Apply styles based on maximized state, position and dimensions
   const containerStyles = isMaximized
@@ -202,6 +198,9 @@ const SimpleDraggableWindow = ({ title, children, isNested, initialMaximized = f
         height: `${dimensions.height}px`,
         margin: 0,
         cursor: isDragging ? 'grabbing' : 'default',
+        // Force inline styles to take precedence over class styles
+        minWidth: hasNestedWindow ? `${dimensions.width}px` : '200px',
+        minHeight: hasNestedWindow ? `${dimensions.height}px` : '100px'
       };
   
   return (

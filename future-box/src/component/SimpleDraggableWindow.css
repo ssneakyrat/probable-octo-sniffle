@@ -32,10 +32,8 @@
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
-/* Styling for windows that contain nested windows */
+/* Styling for windows that contain nested windows - FIXED to remove !important */
 .simple-draggable-window.has-nested-window {
-  width: auto !important;
-  height: auto !important;
   min-height: 600px;
   min-width: 800px;
   display: flex;
@@ -44,8 +42,8 @@
 
 /* Styling for windows that are nested inside other windows */
 .simple-draggable-window.nested-window {
-  width: 90% !important;
-  height: 90% !important;
+  width: 90%;
+  height: 90%;
   max-width: 1100px;
   max-height: 800px;
   margin: 20px;
@@ -61,8 +59,8 @@
 /* Add responsive behavior when nested */
 @media (max-width: 1200px) {
   .simple-draggable-window.nested-window {
-    width: 95% !important;
-    height: 95% !important;
+    width: 95%;
+    height: 95%;
   }
 }
 
