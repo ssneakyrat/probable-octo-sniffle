@@ -16,7 +16,7 @@ import EditorGrid from './EditorGrid';
 import Note from './Note';
 import ConnectionIndicator from './ConnectionIndicator';
 import BarMeasures from './BarMeasures';
-import Instructions from './Instructions';
+// Remove the Instructions import
 
 const PitchEditorContent = () => {
   const { 
@@ -437,7 +437,7 @@ const PitchEditorContent = () => {
         </svg>
       </div>
       
-      <Instructions />
+      {/* Instructions component removed from here */}
     </div>
   );
 };
