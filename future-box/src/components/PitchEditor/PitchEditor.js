@@ -431,6 +431,7 @@ const PitchEditorContent = () => {
       ref={svgRefElement}
       width={GRID_WIDTH} 
       height={GRID_HEIGHT} // Changed from EXTENDED_GRID_HEIGHT + 30
+      viewBox={`0 -30 ${GRID_WIDTH} ${GRID_HEIGHT + 30}`} // Include negative space
       className="cursor-default"
       style={{ cursor: getCursorStyle() }}
       onClick={handleGridClick}
