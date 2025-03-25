@@ -9,6 +9,7 @@
   min-width: 200px;
   height: auto;
   width: auto;
+  position: relative;
 }
 
 /* Adjust the content area to fill the entire space below the title bar */
@@ -63,4 +64,105 @@
     width: 95% !important;
     height: 95% !important;
   }
+}
+
+/* Resize handle styles - make them much larger to be easier to grab */
+.resize-handle {
+  position: absolute;
+  background-color: transparent;
+  z-index: 1000;
+}
+
+/* Edge resize handles */
+.resize-handle.n {
+  top: -5px;
+  left: 5px;
+  right: 5px;
+  height: 10px;
+  cursor: ns-resize;
+}
+
+.resize-handle.e {
+  top: 5px;
+  right: -5px;
+  bottom: 5px;
+  width: 10px;
+  cursor: ew-resize;
+}
+
+.resize-handle.s {
+  bottom: -5px;
+  left: 5px;
+  right: 5px;
+  height: 10px;
+  cursor: ns-resize;
+}
+
+.resize-handle.w {
+  top: 5px;
+  left: -5px;
+  bottom: 5px;
+  width: 10px;
+  cursor: ew-resize;
+}
+
+/* Corner resize handles - make them much larger */
+.resize-handle.ne {
+  top: -8px;
+  right: -8px;
+  width: 16px;
+  height: 16px;
+  cursor: nesw-resize;
+  z-index: 1001; /* Higher z-index for corners to be on top */
+}
+
+.resize-handle.se {
+  bottom: -8px;
+  right: -8px;
+  width: 16px;
+  height: 16px;
+  cursor: nwse-resize;
+  z-index: 1001;
+}
+
+.resize-handle.sw {
+  bottom: -8px;
+  left: -8px;
+  width: 16px;
+  height: 16px;
+  cursor: nesw-resize;
+  z-index: 1001;
+}
+
+.resize-handle.nw {
+  top: -8px;
+  left: -8px;
+  width: 16px;
+  height: 16px;
+  cursor: nwse-resize;
+  z-index: 1001;
+}
+
+/* Visual indicator on hover for resize handles */
+.simple-draggable-window:not(.maximized):hover .resize-handle {
+  background-color: rgba(0, 120, 215, 0.1);
+}
+
+.simple-draggable-window:not(.maximized) .resize-handle:hover {
+  background-color: rgba(0, 120, 215, 0.3);
+}
+
+/* Disable transitions during resize for smoother user experience */
+.simple-draggable-window.resizing {
+  transition: none !important;
+}
+
+/* Ensure content doesn't overflow during resizing */
+.simple-draggable-window.resizing .windows-content {
+  overflow: hidden;
+}
+
+/* Visual indicator when resizing */
+.simple-draggable-window.resizing .resize-handle {
+  background-color: rgba(0, 120, 215, 0.4);
 }
