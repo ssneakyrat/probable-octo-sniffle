@@ -1,0 +1,56 @@
+// Constants for grid dimensions and editor configuration
+export const PIANO_KEY_WIDTH = 50;
+export const GRID_HEIGHT = 400;
+export const GRID_WIDTH = 600;
+export const MIN_NOTE_WIDTH = 80;
+export const NOTE_HEIGHT = 20;
+export const GRID_LINES = 24; // Number of horizontal grid lines (2 octaves)
+export const TIME_DIVISIONS = 16; // Number of vertical grid lines
+export const HANDLE_SIZE = 8;
+
+// Calculate grid cell dimensions for snapping
+export const HORIZONTAL_SNAP = GRID_HEIGHT / GRID_LINES;
+export const VERTICAL_SNAP = (GRID_WIDTH - PIANO_KEY_WIDTH) / TIME_DIVISIONS;
+
+// Piano keys layout (C4 to B5 - two octaves)
+export const PIANO_KEYS = [
+  { note: 'B5', white: true },
+  { note: 'A#5', white: false },
+  { note: 'A5', white: true },
+  { note: 'G#5', white: false },
+  { note: 'G5', white: true },
+  { note: 'F#5', white: false },
+  { note: 'F5', white: true },
+  { note: 'E5', white: true },
+  { note: 'D#5', white: false },
+  { note: 'D5', white: true },
+  { note: 'C#5', white: false },
+  { note: 'C5', white: true },
+  { note: 'B4', white: true },
+  { note: 'A#4', white: false },
+  { note: 'A4', white: true },
+  { note: 'G#4', white: false },
+  { note: 'G4', white: true },
+  { note: 'F#4', white: false },
+  { note: 'F4', white: true },
+  { note: 'E4', white: true },
+  { note: 'D#4', white: false },
+  { note: 'D4', white: true },
+  { note: 'C#4', white: false },
+  { note: 'C4', white: true },
+];
+
+// Editor modes
+export const EDITOR_MODES = {
+  SELECT: 'select',
+  DRAW: 'draw',
+  DELETE: 'delete'
+};
+
+// Note drag states
+export const DRAG_STATES = {
+  NONE: null,
+  DRAGGING: 'dragging',
+  RESIZING_LEFT: 'resizing-left',
+  RESIZING_RIGHT: 'resizing-right'
+};
