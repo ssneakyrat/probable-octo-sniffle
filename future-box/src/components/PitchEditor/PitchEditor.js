@@ -418,21 +418,20 @@ const PitchEditorContent = () => {
       </div>
       
       <div className="relative border border-gray-300 bg-white">
-      <div 
-    className="overflow-auto" 
-    style={{ 
-      width: '100%',
-      maxWidth: GRID_WIDTH, // Set max width to match the visible grid area
-      maxHeight: GRID_HEIGHT/2,
-      overflowX: 'auto',     // Explicitly set overflow-x to auto
-      overflowY: 'auto' 
-    }}
+      <div className="overflow-auto" 
+        style={{ 
+        width: '100%',
+        maxWidth: GRID_WIDTH, // Set max width to match the visible grid area
+        maxHeight: GRID_HEIGHT/2,
+        overflowX: 'auto',     // Explicitly set overflow-x to auto
+        overflowY: 'auto' 
+      }}
   >
     <svg 
       ref={svgRefElement}
       width={TOTAL_GRID_WIDTH} 
       height={GRID_HEIGHT} // Changed from EXTENDED_GRID_HEIGHT + 30
-      viewBox={`0 -30 ${GRID_WIDTH} ${GRID_HEIGHT + 30}`} // Include negative space
+      viewBox={`0 -30 ${TOTAL_GRID_WIDTH+PIANO_KEY_WIDTH} ${GRID_HEIGHT + 30}`} // Include negative space
       className="cursor-default"
       style={{ cursor: getCursorStyle() }}
       onClick={handleGridClick}
