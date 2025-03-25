@@ -20,7 +20,6 @@ import EditorGrid from './EditorGrid';
 import Note from './Note';
 import ConnectionIndicator from './ConnectionIndicator';
 import BarMeasures from './BarMeasures';
-// Remove the Instructions import
 
 const PitchEditorContent = () => {
   const { 
@@ -417,44 +416,48 @@ const PitchEditorContent = () => {
         <EditorToolbar />
       </div>
       
-      <div className="relative border border-gray-300 bg-white">
-      <div className="overflow-auto" 
-        style={{ 
-        width: '100%',
-        maxWidth: GRID_WIDTH, // Set max width to match the visible grid area
-        maxHeight: GRID_HEIGHT/2,
-        overflowX: 'auto',     // Explicitly set overflow-x to auto
-        overflowY: 'auto' 
-      }}
-  >
-    <svg 
-      ref={svgRefElement}
-      width={TOTAL_GRID_WIDTH} 
-      height={GRID_HEIGHT} // Changed from EXTENDED_GRID_HEIGHT + 30
-      viewBox={`0 -30 ${TOTAL_GRID_WIDTH+PIANO_KEY_WIDTH} ${GRID_HEIGHT + 30}`} // Include negative space
-      className="cursor-default"
-      style={{ cursor: getCursorStyle() }}
-      onClick={handleGridClick}
-    >
-      <BarMeasures />
-      <EditorGrid />
-      <PianoKeys />
-      
-      {/* Render all notes */}
-      {notes.map((note, noteIndex) => (
-        <Note 
-          key={`note-${noteIndex}`} 
-          note={note} 
-          noteIndex={noteIndex} 
-        />
-      ))}
-      
-      <ConnectionIndicator />
-    </svg>
-  </div>
-</div>
-      
-      {/* Instructions component removed from here */}
+      {/* Editor container with very prominent border */}
+      <div 
+        className="border-8 border-red-600 rounded-lg p-2 w-full bg-white shadow-lg"
+        style={{ borderWidth: '4px', borderColor: '#000000', borderStyle: 'solid' }}
+      >
+        <div className="relative border border-gray-300 bg-white">
+          <div className="overflow-auto" 
+            style={{ 
+            width: '100%',
+            maxWidth: GRID_WIDTH,
+            maxHeight: GRID_HEIGHT/2,
+            overflowX: 'auto',
+            overflowY: 'auto' 
+          }}
+          >
+            <svg 
+              ref={svgRefElement}
+              width={TOTAL_GRID_WIDTH} 
+              height={GRID_HEIGHT}
+              viewBox={`0 -30 ${TOTAL_GRID_WIDTH+PIANO_KEY_WIDTH} ${GRID_HEIGHT + 30}`}
+              className="cursor-default"
+              style={{ cursor: getCursorStyle() }}
+              onClick={handleGridClick}
+            >
+              <BarMeasures />
+              <EditorGrid />
+              <PianoKeys />
+              
+              {/* Render all notes */}
+              {notes.map((note, noteIndex) => (
+                <Note 
+                  key={`note-${noteIndex}`} 
+                  note={note} 
+                  noteIndex={noteIndex} 
+                />
+              ))}
+              
+              <ConnectionIndicator />
+            </svg>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
