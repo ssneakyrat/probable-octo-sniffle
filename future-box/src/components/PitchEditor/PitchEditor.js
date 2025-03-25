@@ -419,58 +419,59 @@ const PitchEditorContent = () => {
       </div>
       
       {/* Editor container with very prominent border */}
-      <div 
-        className="border-8 border-red-600 rounded-lg p-2 w-full bg-white shadow-lg"
-        style={{ borderWidth: '4px', borderColor: '#000000', borderStyle: 'solid' }}
-      >
-        {/* Add a position relative wrapper to ensure scrollbars appear in the right place */}
-        <div className="relative border border-gray-300 bg-white" style={{ width: '100%' }}>
-          {/* Fixed height container with overflow and proper dimensions */}
-          <div 
-            ref={containerRef}
-            className="overflow-auto" 
-            style={{ 
-              width: '100%',
-              height: '300px', // Fixed height to ensure consistent scrollbar behavior
-              position: 'relative', // This helps contain the scrollbars within this element
-            }}
-          >
-            {/* 
-              SVG with explicit width and height greater than container to force scrollbars 
-              We're using inline style to set the width greater than container
-            */}
-            <svg 
-              ref={svgRefElement}
-              width={TOTAL_GRID_WIDTH} 
-              height={GRID_HEIGHT}
-              viewBox={`0 -30 ${TOTAL_GRID_WIDTH} ${GRID_HEIGHT + 30}`}
-              className="cursor-default"
-              style={{ 
-                cursor: getCursorStyle(),
-                minWidth: '120%', // Force horizontal scrollbar by making content wider than container
-                display: 'block', // Prevent extra space below SVG
-                position: 'relative'
-              }}
-              onClick={handleGridClick}
-            >
-              <BarMeasures />
-              <EditorGrid />
-              <PianoKeys />
-              
-              {/* Render all notes */}
-              {notes.map((note, noteIndex) => (
-                <Note 
-                  key={`note-${noteIndex}`} 
-                  note={note} 
-                  noteIndex={noteIndex} 
-                />
-              ))}
-              
-              <ConnectionIndicator />
-            </svg>
-          </div>
-        </div>
-      </div>
+<div 
+  className="border-8 border-red-600 rounded-lg p-2 w-full bg-white shadow-lg"
+  style={{ borderWidth: '4px', borderColor: '#000000', borderStyle: 'solid' }}
+>
+  {/* Remove this extra wrapper div that's causing positioning issues */}
+  {/* <div className="relative border border-gray-300 bg-white" style={{ width: '100%' }}> */}
+  
+  {/* Fixed height container with overflow - simplified structure */}
+  <div 
+    ref={containerRef}
+    className="overflow-auto border border-gray-300 bg-white" 
+    style={{ 
+      width: '100%',
+      height: '300px',
+      position: 'relative',
+      // Add explicit overflow in both directions
+      overflowX: 'scroll',
+      overflowY: 'auto'
+    }}
+  >
+    {/* SVG with fixed width but no conflicting percentage width */}
+    <svg 
+      ref={svgRefElement}
+      width={TOTAL_GRID_WIDTH} 
+      height={GRID_HEIGHT}
+      viewBox={`0 -30 ${TOTAL_GRID_WIDTH} ${GRID_HEIGHT + 30}`}
+      className="cursor-default"
+      style={{ 
+        cursor: getCursorStyle(),
+        // Remove the minWidth: '120%' that's causing conflicts
+        display: 'block',
+        // Remove position: relative that conflicts with container
+      }}
+      onClick={handleGridClick}
+    >
+      <BarMeasures />
+      <EditorGrid />
+      <PianoKeys />
+      
+      {/* Render all notes */}
+      {notes.map((note, noteIndex) => (
+        <Note 
+          key={`note-${noteIndex}`} 
+          note={note} 
+          noteIndex={noteIndex} 
+        />
+      ))}
+      
+      <ConnectionIndicator />
+    </svg>
+  </div>
+  {/* </div> Remove closing tag for the removed div */}
+</div>
     </div>
   );
 };

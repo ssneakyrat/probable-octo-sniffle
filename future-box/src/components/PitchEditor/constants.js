@@ -4,7 +4,7 @@ export const PIANO_PITCH_COUNT = 48; // Default number of piano pitches
 export const PITCH_HEIGHT = 16; // Height per pitch in pixels
 
 // Measure configuration
-export const DEFAULT_MEASURE_COUNT = 10; // Number of measures to display in the grid
+export const DEFAULT_MEASURE_COUNT = 50; // Number of measures to display in the grid
 export const MEASURE_WIDTH = 60; // Width per measure in pixels (horizontal space for each measure)
 
 // Calculate grid width based on measure count and measure width
