@@ -9,7 +9,7 @@ import SimpleDraggableWindow from './component/SimpleDraggableWindow';
 function App() {
   return (
     <div className="App">
-      <SimpleDraggableWindow title="Main Window">
+      <SimpleDraggableWindow title="Main Window" initialMaximized={true}>
         <SimpleDraggableWindow title="Piano Roll">
           <PianoRoll />
         </SimpleDraggableWindow>

@@ -9,9 +9,10 @@ import './SimpleDraggableWindow.css';
  * @param {string} title - The title to display in the window title bar
  * @param {ReactNode} children - The content to display inside the window
  * @param {boolean} isNested - Flag to indicate if this window is nested inside another window
+ * @param {boolean} initialMaximized - Whether the window should start maximized
  */
-const SimpleDraggableWindow = ({ title, children, isNested }) => {
-  const [isMaximized, setIsMaximized] = useState(false);
+const SimpleDraggableWindow = ({ title, children, isNested, initialMaximized = false }) => {
+  const [isMaximized, setIsMaximized] = useState(initialMaximized);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [initialMousePos, setInitialMousePos] = useState({ x: 0, y: 0 });
