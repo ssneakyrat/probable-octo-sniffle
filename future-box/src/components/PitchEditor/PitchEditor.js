@@ -422,7 +422,7 @@ const PitchEditorContent = () => {
     style={{ 
       width: '100%',
       maxWidth: GRID_WIDTH, // Set max width to match the visible grid area
-      maxHeight: GRID_HEIGHT + 30,
+      maxHeight: GRID_HEIGHT/2,
       overflowX: 'auto',     // Explicitly set overflow-x to auto
       overflowY: 'auto' 
     }}
@@ -430,7 +430,7 @@ const PitchEditorContent = () => {
     <svg 
       ref={svgRefElement}
       width={EXTENDED_GRID_WIDTH + 10} 
-      height={GRID_HEIGHT + 30} // Changed from EXTENDED_GRID_HEIGHT + 30
+      height={GRID_HEIGHT} // Changed from EXTENDED_GRID_HEIGHT + 30
       className="cursor-default"
       style={{ cursor: getCursorStyle() }}
       onClick={handleGridClick}
