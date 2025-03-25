@@ -1,6 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './PianoRoll.css';
 
+// Piano roll dimensions
+const PIANO_CONTENT_WIDTH = 5000; // Width of the content inside the scroll view
+const PIANO_CONTENT_HEIGHT = 1500; // Height of the content inside the scroll view
+const PIANO_ROLL_WIDTH = 1200; // Total width of the piano roll component
+const PIANO_ROLL_HEIGHT = 700; // Total height of the piano roll component
+
 /**
  * PianoRoll component that displays an SVG grid with horizontal and vertical scrolling
  * and a bar measure ruler at the top
@@ -11,12 +17,12 @@ const PianoRoll = () => {
   
   // State for grid dimensions
   const [gridDimensions] = useState({
-    width: 2000, // Total width of the grid
-    height: 1200, // Total height of the grid
+    width: PIANO_CONTENT_WIDTH, // Total width of the grid
+    height: PIANO_CONTENT_HEIGHT, // Total height of the grid
     cellWidth: 20, // Width of each grid cell
     rowHeight: 20, // Height of each row
-    viewWidth: 800, // Visible width of the grid container
-    viewHeight: 500, // Visible height of the grid container
+    viewWidth: PIANO_ROLL_WIDTH, // Visible width of the grid container
+    viewHeight: PIANO_ROLL_HEIGHT, // Visible height of the grid container
     keyboardWidth: 100, // Width of the piano keyboard on the left
     barMeasureHeight: 30, // Height of the bar measure at the top
   });
