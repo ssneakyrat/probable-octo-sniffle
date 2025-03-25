@@ -8,6 +8,7 @@
   min-height: 100px;
   min-width: 200px;
   height: auto;
+  width: auto;
 }
 
 /* Adjust the content area to fill the entire space below the title bar */
@@ -15,6 +16,9 @@
   flex: 1;
   overflow: auto;
   border-top: 1px solid #ddd;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* Remove the default margin to allow for proper absolute positioning */
@@ -25,4 +29,38 @@
 /* Ensure the window has a proper box shadow to make it stand out */
 .simple-draggable-window:not(.maximized) {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Styling for windows that contain nested windows */
+.simple-draggable-window.has-nested-window {
+  width: auto !important;
+  height: auto !important;
+  min-height: 600px;
+  min-width: 800px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Styling for windows that are nested inside other windows */
+.simple-draggable-window.nested-window {
+  width: 90% !important;
+  height: 90% !important;
+  max-width: 1100px;
+  max-height: 800px;
+  margin: 20px;
+  position: relative !important;
+}
+
+/* Override the fixed dimensions from WindowsContainer.css */
+.windows-container.simple-draggable-window {
+  width: auto;
+  height: auto;
+}
+
+/* Add responsive behavior when nested */
+@media (max-width: 1200px) {
+  .simple-draggable-window.nested-window {
+    width: 95% !important;
+    height: 95% !important;
+  }
 }
