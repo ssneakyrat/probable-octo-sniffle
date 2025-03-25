@@ -1,5 +1,11 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { EDITOR_MODES, DRAG_STATES, GRID_WIDTH, PIANO_KEY_WIDTH } from './constants';
+import { 
+  EDITOR_MODES, 
+  DRAG_STATES, 
+  GRID_WIDTH, 
+  PIANO_KEY_WIDTH,
+  updatePianoValues 
+} from './constants';
 import { 
   createNewNote, 
   updateNoteConnections, 
@@ -191,11 +197,14 @@ export const EditorProvider = ({ children }) => {
     setInitialPoints(null);
   };
   
-  // Handle piano pitch count change
+  // Then update the handlePianoPitchCountChange function
   const handlePianoPitchCountChange = (newPitchCount) => {
     if (pianoPitchCount && newPitchCount !== pianoPitchCount) {
       // Adjust all notes for the new pitch count
       setNotes(prevNotes => adjustNotesForPitchCount(prevNotes, pianoPitchCount, newPitchCount));
+      
+      // Update all piano-related values
+      updatePianoValues(newPitchCount);
     }
     
     // Update the pitch count state
