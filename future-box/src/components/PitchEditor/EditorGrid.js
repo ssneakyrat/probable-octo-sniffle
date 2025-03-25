@@ -4,6 +4,7 @@ import {
   PIANO_KEY_WIDTH, 
   GRID_HEIGHT, 
   GRID_WIDTH,
+  TOTAL_GRID_WIDTH,
   GRID_LINES, 
   HORIZONTAL_SNAP,
   DRAG_STATES
@@ -27,7 +28,7 @@ const EditorGrid = () => {
       <rect 
         x={PIANO_KEY_WIDTH} 
         y="0" 
-        width={GRID_WIDTH - PIANO_KEY_WIDTH} 
+        width={TOTAL_GRID_WIDTH - PIANO_KEY_WIDTH} 
         height={GRID_HEIGHT} 
         fill="#f8f8f8" 
       />
@@ -38,7 +39,7 @@ const EditorGrid = () => {
           key={`h-${i}`}
           x1={PIANO_KEY_WIDTH} 
           y1={i * (GRID_HEIGHT / GRID_LINES)} 
-          x2={GRID_WIDTH} 
+          x2={TOTAL_GRID_WIDTH} 
           y2={i * (GRID_HEIGHT / GRID_LINES)}
           stroke="#ddd"
           strokeWidth="1"
@@ -54,12 +55,13 @@ const EditorGrid = () => {
           (i % 1 === 0) : // For 4/4, 3/4, etc. - every quarter note
           (i % (timeSignature.numerator / 4) === 0); // For 6/8, 9/8, etc. - every dotted quarter (3 eighth notes)
         
+        // Calculate position based on TOTAL_GRID_WIDTH instead of GRID_WIDTH
         return (
           <line 
             key={`v-${i}`}
-            x1={PIANO_KEY_WIDTH + i * ((GRID_WIDTH - PIANO_KEY_WIDTH) / divisions)} 
+            x1={PIANO_KEY_WIDTH + i * ((TOTAL_GRID_WIDTH - PIANO_KEY_WIDTH) / divisions)} 
             y1="0" 
-            x2={PIANO_KEY_WIDTH + i * ((GRID_WIDTH - PIANO_KEY_WIDTH) / divisions)} 
+            x2={PIANO_KEY_WIDTH + i * ((TOTAL_GRID_WIDTH - PIANO_KEY_WIDTH) / divisions)} 
             y2={GRID_HEIGHT}
             stroke={isMeasureStart ? "#aaa" : (isBeat ? "#ccc" : "#ddd")}
             strokeWidth={isMeasureStart ? "1.5" : "1"}
@@ -76,7 +78,7 @@ const EditorGrid = () => {
               key={`snap-h-${i}`}
               x1={PIANO_KEY_WIDTH} 
               y1={i * HORIZONTAL_SNAP} 
-              x2={GRID_WIDTH} 
+              x2={TOTAL_GRID_WIDTH} 
               y2={i * HORIZONTAL_SNAP}
               stroke="#5070c0"
               strokeWidth="0.5"

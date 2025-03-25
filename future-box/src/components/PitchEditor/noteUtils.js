@@ -1,8 +1,7 @@
 import {
   PIANO_KEY_WIDTH,
   GRID_HEIGHT,
-  GRID_WIDTH,
-  EXTENDED_GRID_WIDTH,
+  TOTAL_GRID_WIDTH,
   HORIZONTAL_SNAP,
   VERTICAL_SNAP,
   MIN_NOTE_WIDTH,
@@ -46,7 +45,7 @@ export const createInitialPitchPoints = (noteRect) => {
   ];
 };
 
-// Update the createNewNote function to properly snap to the time signature grid
+// Update to createNewNote in noteUtils.js
 export const createNewNote = (x, y, verticalSnap = VERTICAL_SNAP) => {
   // Snap the grid position (after accounting for piano width and centering)
   const snappedX = PIANO_KEY_WIDTH + snapToGrid(x - PIANO_KEY_WIDTH - MIN_NOTE_WIDTH / 2, verticalSnap);
@@ -60,9 +59,9 @@ export const createNewNote = (x, y, verticalSnap = VERTICAL_SNAP) => {
     height: NOTE_HEIGHT
   };
   
-  // Ensure note is fully within grid
-  if (noteRect.x + noteRect.width > GRID_WIDTH) {
-    noteRect.x = GRID_WIDTH - noteRect.width;
+  // Ensure note is fully within grid - now use TOTAL_GRID_WIDTH instead of GRID_WIDTH
+  if (noteRect.x + noteRect.width > TOTAL_GRID_WIDTH) {
+    noteRect.x = TOTAL_GRID_WIDTH - noteRect.width;
   }
   
   // Create initial pitch points

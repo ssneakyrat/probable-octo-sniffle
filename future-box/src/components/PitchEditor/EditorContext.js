@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { 
   EDITOR_MODES, 
   DRAG_STATES, 
-  GRID_WIDTH, 
+  TOTAL_GRID_WIDTH, 
   PIANO_KEY_WIDTH,
   updatePianoValues 
 } from './constants';
@@ -65,7 +65,7 @@ export const EditorProvider = ({ children }) => {
   // Calculate vertical snap based on time divisions
   const getCurrentVerticalSnap = () => {
     const divisions = calculateTimeDivisions();
-    return (GRID_WIDTH - PIANO_KEY_WIDTH) / divisions;
+    return (TOTAL_GRID_WIDTH - PIANO_KEY_WIDTH) / divisions;
   };
   
   // Initialize with demo notes

@@ -8,6 +8,7 @@ import {
   HORIZONTAL_SNAP,
   EXTENDED_GRID_WIDTH,
   EXTENDED_GRID_HEIGHT,
+  TOTAL_GRID_WIDTH,
 } from './constants';
 import { snapToGrid, updateNoteConnections, adjustPitchPoints, updateYOffsets } from './noteUtils';
 
@@ -277,7 +278,7 @@ const PitchEditorContent = () => {
         
         // Constrain to grid boundaries
         newX = Math.max(PIANO_KEY_WIDTH, newX);
-        newX = Math.min(GRID_WIDTH - initialRect.width, newX);
+        newX = Math.min(TOTAL_GRID_WIDTH - initialRect.width, newX);
         newY = Math.max(0, Math.min(GRID_HEIGHT - initialRect.height, newY));
         
         // Update note rectangle
@@ -355,7 +356,7 @@ const PitchEditorContent = () => {
         
         // Enforce minimum width and grid boundaries
         newWidth = Math.max(80, newWidth);
-        newWidth = Math.min(GRID_WIDTH - initialRect.x, newWidth);
+        newWidth = Math.min(TOTAL_GRID_WIDTH - initialRect.x, newWidth);
         
         // Update note rectangle
         const newRect = {
@@ -421,7 +422,7 @@ const PitchEditorContent = () => {
     className="overflow-auto" 
     style={{ 
       width: '100%',
-      maxWidth: GRID_WIDTH/2, // Set max width to match the visible grid area
+      maxWidth: GRID_WIDTH, // Set max width to match the visible grid area
       maxHeight: GRID_HEIGHT/2,
       overflowX: 'auto',     // Explicitly set overflow-x to auto
       overflowY: 'auto' 
@@ -429,7 +430,7 @@ const PitchEditorContent = () => {
   >
     <svg 
       ref={svgRefElement}
-      width={GRID_WIDTH} 
+      width={TOTAL_GRID_WIDTH} 
       height={GRID_HEIGHT} // Changed from EXTENDED_GRID_HEIGHT + 30
       viewBox={`0 -30 ${GRID_WIDTH} ${GRID_HEIGHT + 30}`} // Include negative space
       className="cursor-default"
