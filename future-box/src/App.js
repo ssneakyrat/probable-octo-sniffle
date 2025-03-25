@@ -1,19 +1,17 @@
 import React from 'react';
 import './App.css';
 import PianoRoll from './component/PianoRoll';
+import WindowsContainer from './component/WindowsContainer';
 
 /**
- * Main App component that renders the PianoRoll
+ * Main App component that renders the PianoRoll within a Windows-like container
  */
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <h1>FutureBox Audio Editor</h1>
-        <div className="editor-wrapper">
-          <PianoRoll />
-        </div>
-      </header>
+      <WindowsContainer title="FutureBox Audio Editor">
+        <PianoRoll />
+      </WindowsContainer>
     </div>
   );
 }
