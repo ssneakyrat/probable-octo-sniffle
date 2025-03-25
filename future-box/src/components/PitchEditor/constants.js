@@ -45,7 +45,8 @@ export const updatePianoValues = (pitchCount) => {
   PIANO_KEYS = generatePianoKeys(pitchCount);
   GRID_HEIGHT = pitchCount * PITCH_HEIGHT;
   GRID_LINES = pitchCount;
-  EXTENDED_GRID_HEIGHT = GRID_HEIGHT;
+  //EXTENDED_GRID_HEIGHT = GRID_HEIGHT;
+  TOTAL_GRID_HEIGHT = GRID_HEIGHT * 2; // Set total height to double the grid height, similar to width
   HORIZONTAL_SNAP = GRID_HEIGHT / GRID_LINES;
 };
 
@@ -55,7 +56,8 @@ export let PIANO_KEYS = generatePianoKeys(currentPitchCount);
 // Grid dimensions that depend on pitch count - now variables
 export let GRID_HEIGHT = currentPitchCount * PITCH_HEIGHT;
 export let GRID_LINES = currentPitchCount;
-export let EXTENDED_GRID_HEIGHT = GRID_HEIGHT * 2;
+export let EXTENDED_GRID_HEIGHT = GRID_HEIGHT;
+export let TOTAL_GRID_HEIGHT = GRID_HEIGHT * 2; // Added total height, similar to total width
 export let HORIZONTAL_SNAP = GRID_HEIGHT / GRID_LINES;
 
 // Grid dimensions that don't depend on pitch count - still constants
