@@ -417,7 +417,7 @@ const PitchEditorContent = () => {
       </div>
       
       <div className="relative border border-gray-300 bg-white">
-  <div 
+      <div 
     className="overflow-auto" 
     style={{ 
       width: '100%',
@@ -430,7 +430,7 @@ const PitchEditorContent = () => {
     <svg 
       ref={svgRefElement}
       width={EXTENDED_GRID_WIDTH + 10} 
-      height={EXTENDED_GRID_HEIGHT + 30} 
+      height={GRID_HEIGHT + 30} // Changed from EXTENDED_GRID_HEIGHT + 30
       className="cursor-default"
       style={{ cursor: getCursorStyle() }}
       onClick={handleGridClick}

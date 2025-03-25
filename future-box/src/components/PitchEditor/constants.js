@@ -44,7 +44,7 @@ export const updatePianoValues = (pitchCount) => {
   PIANO_KEYS = generatePianoKeys(pitchCount);
   GRID_HEIGHT = pitchCount * PITCH_HEIGHT;
   GRID_LINES = pitchCount;
-  EXTENDED_GRID_HEIGHT = GRID_HEIGHT * 2;
+  EXTENDED_GRID_HEIGHT = GRID_HEIGHT;
   HORIZONTAL_SNAP = GRID_HEIGHT / GRID_LINES;
 };
 
