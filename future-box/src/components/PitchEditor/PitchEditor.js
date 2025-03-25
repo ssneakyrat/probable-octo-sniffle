@@ -7,6 +7,7 @@ import {
   EDITOR_MODES,
   HORIZONTAL_SNAP,
   EXTENDED_GRID_WIDTH,
+  EXTENDED_GRID_HEIGHT,
 } from './constants';
 import { snapToGrid, updateNoteConnections, adjustPitchPoints, updateYOffsets } from './noteUtils';
 
@@ -413,17 +414,19 @@ const PitchEditorContent = () => {
       
       <div className="relative border border-gray-300 bg-white">
   <div 
-    className="overflow-x-auto" 
+    className="overflow-auto" 
     style={{ 
       width: '100%',
       maxWidth: GRID_WIDTH, // Set max width to match the visible grid area
-      overflowX: 'auto'     // Explicitly set overflow-x to auto
+      maxHeight: GRID_HEIGHT + 30,
+      overflowX: 'auto',     // Explicitly set overflow-x to auto
+      overflowY: 'auto' 
     }}
   >
     <svg 
       ref={svgRefElement}
       width={EXTENDED_GRID_WIDTH + 10} 
-      height={GRID_HEIGHT + 30} 
+      height={EXTENDED_GRID_HEIGHT  + 30} 
       className="cursor-default"
       style={{ cursor: getCursorStyle() }}
       onClick={handleGridClick}
