@@ -13,6 +13,7 @@ import { snapToGrid, updateNoteConnections, adjustPitchPoints, updateYOffsets } 
 
 import EditorToolbar from './EditorToolbar';
 import TimeSignatureSelector from './TimeSignatureSelector';
+import PianoPitchCountSelector from './PianoPitchCountSelector';
 import PianoKeys from './PianoKeys';
 import EditorGrid from './EditorGrid';
 import Note from './Note';
@@ -408,7 +409,10 @@ const PitchEditorContent = () => {
       <h2 className="text-xl font-bold mb-2">UTAU-like Pitch Editor with Connected Notes</h2>
       
       <div className="flex justify-between items-center w-full mb-4">
-        <TimeSignatureSelector />
+        <div className="flex space-x-4">
+          <TimeSignatureSelector />
+          <PianoPitchCountSelector />
+        </div>
         <EditorToolbar />
       </div>
       
@@ -426,7 +430,7 @@ const PitchEditorContent = () => {
     <svg 
       ref={svgRefElement}
       width={EXTENDED_GRID_WIDTH + 10} 
-      height={EXTENDED_GRID_HEIGHT  + 30} 
+      height={EXTENDED_GRID_HEIGHT + 30} 
       className="cursor-default"
       style={{ cursor: getCursorStyle() }}
       onClick={handleGridClick}

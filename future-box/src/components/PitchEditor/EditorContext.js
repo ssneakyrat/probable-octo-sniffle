@@ -5,7 +5,8 @@ import {
   updateNoteConnections, 
   updateYOffsets, 
   adjustPitchPoints, 
-  createDemoNotes 
+  createDemoNotes,
+  adjustNotesForPitchCount
 } from './noteUtils';
 import { addMiddlePoint, deleteControlPoint } from './bezierUtils';
 
@@ -24,6 +25,9 @@ export const EditorProvider = ({ children }) => {
   const [notes, setNotes] = useState([]);
   const [selectedNoteIndex, setSelectedNoteIndex] = useState(null);
   
+  // Piano pitch count state (with default value matching the constant)
+  const [pianoPitchCount, setPianoPitchCount] = useState(null);
+
   // Time signature state
   const [timeSignature, setTimeSignature] = useState({
     id: '4/4',
@@ -187,6 +191,17 @@ export const EditorProvider = ({ children }) => {
     setInitialPoints(null);
   };
   
+  // Handle piano pitch count change
+  const handlePianoPitchCountChange = (newPitchCount) => {
+    if (pianoPitchCount && newPitchCount !== pianoPitchCount) {
+      // Adjust all notes for the new pitch count
+      setNotes(prevNotes => adjustNotesForPitchCount(prevNotes, pianoPitchCount, newPitchCount));
+    }
+    
+    // Update the pitch count state
+    setPianoPitchCount(newPitchCount);
+  };
+
   return (
     <EditorContext.Provider value={{
       // State
@@ -194,6 +209,8 @@ export const EditorProvider = ({ children }) => {
       setEditorMode,
       notes,
       setNotes,
+      pianoPitchCount,
+      setPianoPitchCount: handlePianoPitchCountChange,
       selectedNoteIndex,
       setSelectedNoteIndex,
       activePoint,

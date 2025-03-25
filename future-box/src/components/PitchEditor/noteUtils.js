@@ -216,6 +216,38 @@ export const findConnectedNotes = (notes) => {
   return connections;
 };
 
+// Utility function to adjust notes when piano pitch count changes
+export const adjustNotesForPitchCount = (notes, oldPitchCount, newPitchCount) => {
+  if (oldPitchCount === newPitchCount) return notes;
+  
+  const scaleRatio = newPitchCount / oldPitchCount;
+  
+  return notes.map(note => {
+    // Create a copy of the note
+    const updatedNote = { ...note };
+    
+    // Scale the y position and height
+    updatedNote.rect = {
+      ...note.rect,
+      y: note.rect.y * scaleRatio
+    };
+    
+    // Adjust pitch points
+    if (updatedNote.pitchPoints) {
+      updatedNote.pitchPoints = updatedNote.pitchPoints.map(point => {
+        return {
+          ...point,
+          y: point.y * scaleRatio,
+          cp1y: point.cp1y !== undefined ? point.cp1y * scaleRatio : undefined,
+          cp2y: point.cp2y !== undefined ? point.cp2y * scaleRatio : undefined
+        };
+      });
+    }
+    
+    return updatedNote;
+  });
+};
+
 // Create demo notes for initial display
 export const createDemoNotes = () => {
   const demoNotes = [];
