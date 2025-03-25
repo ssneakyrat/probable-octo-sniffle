@@ -1,0 +1,27 @@
+.piano-roll-wrapper {
+    background-color: #282c34;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  }
+  
+  .piano-roll-container::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+  
+  .piano-roll-container::-webkit-scrollbar-track {
+    background: #1e1e1e;
+  }
+  
+  .piano-roll-container::-webkit-scrollbar-thumb {
+    background-color: #555;
+    border-radius: 6px;
+    border: 3px solid #1e1e1e;
+  }
+  
+  .piano-roll-container::-webkit-scrollbar-corner {
+    background: #1e1e1e;
+  }
+  
+  .piano-keyboard {
+    background-color: #222;
+  }

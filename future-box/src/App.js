@@ -1,9 +1,9 @@
 import React from 'react';
 import './App.css';
-import PitchEditor from './component/PitchEditorOld';
+import PianoRoll from './component/PianoRoll';
 
 /**
- * Main App component that renders the PitchEditor
+ * Main App component that renders the PianoRoll
  */
 function App() {
   return (
@@ -11,7 +11,7 @@ function App() {
       <header className="App-header">
         <h1>FutureBox Audio Editor</h1>
         <div className="editor-wrapper">
-          {/*<PitchEditor />*/}
+          <PianoRoll />
         </div>
       </header>
     </div>
