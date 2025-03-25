@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import PitchEditor from './components/PitchEditor';
+import PitchEditor from './components/PitchEditor/PitchEditor';
 
 function App() {
   return (
