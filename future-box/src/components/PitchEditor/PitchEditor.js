@@ -14,7 +14,6 @@ import { snapToGrid, updateNoteConnections, adjustPitchPoints, updateYOffsets } 
 
 import EditorToolbar from './EditorToolbar';
 import TimeSignatureSelector from './TimeSignatureSelector';
-import PianoPitchCountSelector from './PianoPitchCountSelector';
 import PianoKeys from './PianoKeys';
 import EditorGrid from './EditorGrid';
 import Note from './Note';
@@ -411,7 +410,6 @@ const PitchEditorContent = () => {
       <div className="flex justify-between items-center w-full mb-4">
         <div className="flex space-x-4">
           <TimeSignatureSelector />
-          <PianoPitchCountSelector />
         </div>
         <EditorToolbar />
       </div>
@@ -435,7 +433,7 @@ const PitchEditorContent = () => {
               ref={svgRefElement}
               width={TOTAL_GRID_WIDTH} 
               height={GRID_HEIGHT}
-              viewBox={`0 -30 ${TOTAL_GRID_WIDTH+PIANO_KEY_WIDTH} ${GRID_HEIGHT + 30}`}
+              viewBox={`0 -30 ${TOTAL_GRID_WIDTH+200} ${GRID_HEIGHT + 30}`}
               className="cursor-default"
               style={{ cursor: getCursorStyle() }}
               onClick={handleGridClick}
