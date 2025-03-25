@@ -1,0 +1,25 @@
+/* This CSS file adds draggable styling to Windows Container */
+/* Import the base styles first */
+@import './WindowsContainer.css';
+
+/* Additional styles for draggable functionality */
+.windows-title-bar {
+  cursor: grab;
+}
+
+.windows-container.dragging .windows-title-bar {
+  cursor: grabbing;
+}
+
+/* Make sure the container can be positioned absolutely when dragging */
+.windows-container:not(.maximized) {
+  transition: none; /* Disable transitions while dragging for smoother movement */
+}
+
+/* When maximized, reset the position */
+.windows-container.maximized {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  transform: none !important;
+}
