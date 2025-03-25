@@ -412,33 +412,39 @@ const PitchEditorContent = () => {
       </div>
       
       <div className="relative border border-gray-300 bg-white">
-        <div className="overflow-x-auto" style={{ maxWidth: '100%' }}>
-          <svg 
-            ref={svgRefElement}
-            width={EXTENDED_GRID_WIDTH + 10} 
-            height={GRID_HEIGHT + 30} 
-            className="cursor-default"
-            style={{ cursor: getCursorStyle() }}
-            onClick={handleGridClick}
-            viewBox={`0 -20 ${EXTENDED_GRID_WIDTH + 10} ${GRID_HEIGHT + 30}`}
-          >
-            <BarMeasures />
-            <EditorGrid />
-            <PianoKeys />
-            
-            {/* Render all notes */}
-            {notes.map((note, noteIndex) => (
-              <Note 
-                key={`note-${noteIndex}`} 
-                note={note} 
-                noteIndex={noteIndex} 
-              />
-            ))}
-            
-            <ConnectionIndicator />
-          </svg>
-        </div>
-      </div>
+  <div 
+    className="overflow-x-auto" 
+    style={{ 
+      width: '100%',
+      maxWidth: GRID_WIDTH, // Set max width to match the visible grid area
+      overflowX: 'auto'     // Explicitly set overflow-x to auto
+    }}
+  >
+    <svg 
+      ref={svgRefElement}
+      width={EXTENDED_GRID_WIDTH + 10} 
+      height={GRID_HEIGHT + 30} 
+      className="cursor-default"
+      style={{ cursor: getCursorStyle() }}
+      onClick={handleGridClick}
+    >
+      <BarMeasures />
+      <EditorGrid />
+      <PianoKeys />
+      
+      {/* Render all notes */}
+      {notes.map((note, noteIndex) => (
+        <Note 
+          key={`note-${noteIndex}`} 
+          note={note} 
+          noteIndex={noteIndex} 
+        />
+      ))}
+      
+      <ConnectionIndicator />
+    </svg>
+  </div>
+</div>
       
       {/* Instructions component removed from here */}
     </div>
