@@ -15,7 +15,7 @@ import PianoKeys from './PianoKeys';
 import EditorGrid from './EditorGrid';
 import Note from './Note';
 import ConnectionIndicator from './ConnectionIndicator';
-import Instructions from './Instructions';
+import BarMeasures from './BarMeasures';
 
 const PitchEditorContent = () => {
   const { 
@@ -399,11 +399,13 @@ const PitchEditorContent = () => {
         <svg 
           ref={svgRefElement}
           width={GRID_WIDTH + 10} 
-          height={GRID_HEIGHT + 10}
+          height={GRID_HEIGHT + 30} 
           className="cursor-default"
           style={{ cursor: getCursorStyle() }}
           onClick={handleGridClick}
+          viewBox={`0 -20 ${GRID_WIDTH + 10} ${GRID_HEIGHT + 30}`}
         >
+          <BarMeasures />
           <EditorGrid />
           <PianoKeys />
           
@@ -419,8 +421,6 @@ const PitchEditorContent = () => {
           <ConnectionIndicator />
         </svg>
       </div>
-      
-      <Instructions />
     </div>
   );
 };
