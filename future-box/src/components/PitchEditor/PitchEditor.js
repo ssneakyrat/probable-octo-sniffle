@@ -6,6 +6,7 @@ import {
   GRID_WIDTH,
   EDITOR_MODES,
   HORIZONTAL_SNAP,
+  EXTENDED_GRID_WIDTH,
 } from './constants';
 import { snapToGrid, updateNoteConnections, adjustPitchPoints, updateYOffsets } from './noteUtils';
 
@@ -411,30 +412,32 @@ const PitchEditorContent = () => {
       </div>
       
       <div className="relative border border-gray-300 bg-white">
-        <svg 
-          ref={svgRefElement}
-          width={GRID_WIDTH + 10} 
-          height={GRID_HEIGHT + 30} 
-          className="cursor-default"
-          style={{ cursor: getCursorStyle() }}
-          onClick={handleGridClick}
-          viewBox={`0 -20 ${GRID_WIDTH + 10} ${GRID_HEIGHT + 30}`}
-        >
-          <BarMeasures />
-          <EditorGrid />
-          <PianoKeys />
-          
-          {/* Render all notes */}
-          {notes.map((note, noteIndex) => (
-            <Note 
-              key={`note-${noteIndex}`} 
-              note={note} 
-              noteIndex={noteIndex} 
-            />
-          ))}
-          
-          <ConnectionIndicator />
-        </svg>
+        <div className="overflow-x-auto" style={{ maxWidth: '100%' }}>
+          <svg 
+            ref={svgRefElement}
+            width={EXTENDED_GRID_WIDTH + 10} 
+            height={GRID_HEIGHT + 30} 
+            className="cursor-default"
+            style={{ cursor: getCursorStyle() }}
+            onClick={handleGridClick}
+            viewBox={`0 -20 ${EXTENDED_GRID_WIDTH + 10} ${GRID_HEIGHT + 30}`}
+          >
+            <BarMeasures />
+            <EditorGrid />
+            <PianoKeys />
+            
+            {/* Render all notes */}
+            {notes.map((note, noteIndex) => (
+              <Note 
+                key={`note-${noteIndex}`} 
+                note={note} 
+                noteIndex={noteIndex} 
+              />
+            ))}
+            
+            <ConnectionIndicator />
+          </svg>
+        </div>
       </div>
       
       {/* Instructions component removed from here */}

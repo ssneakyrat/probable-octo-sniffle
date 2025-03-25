@@ -1,6 +1,6 @@
 import React from 'react';
 import { useEditor } from './EditorContext';
-import { PIANO_KEY_WIDTH, GRID_WIDTH } from './constants';
+import { PIANO_KEY_WIDTH, GRID_WIDTH, EXTENDED_GRID_WIDTH } from './constants';
 
 const BarMeasures = () => {
   const { timeSignature, calculateTimeDivisions } = useEditor();

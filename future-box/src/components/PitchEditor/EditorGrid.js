@@ -3,7 +3,8 @@ import { useEditor } from './EditorContext';
 import { 
   PIANO_KEY_WIDTH, 
   GRID_HEIGHT, 
-  GRID_WIDTH, 
+  GRID_WIDTH,
+  EXTENDED_GRID_WIDTH,
   GRID_LINES, 
   HORIZONTAL_SNAP,
   DRAG_STATES

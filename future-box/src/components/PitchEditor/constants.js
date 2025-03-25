@@ -2,6 +2,7 @@
 export const PIANO_KEY_WIDTH = 50;
 export const GRID_HEIGHT = 400;
 export const GRID_WIDTH = 600;
+export const EXTENDED_GRID_WIDTH = 1200; // Extended width for scrolling
 export const MIN_NOTE_WIDTH = 80;
 export const NOTE_HEIGHT = 20;
 export const GRID_LINES = 24; // Number of horizontal grid lines (2 octaves)
